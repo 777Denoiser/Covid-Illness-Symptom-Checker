@@ -8,7 +8,7 @@ import java.io.File;
 
 public class Main {
     static {
-        System.loadLibrary("ACOAlgorithm"); // The ghost in the machine.
+        System.loadLibrary("ACOAlgorithm");
     }
 
     private native String runACOAlgorithm(String inputData);
@@ -18,36 +18,35 @@ public class Main {
     }
 
     private static void createAndShowGUI() {
-        JFrame frame = new JFrame("Monochromatic Triangle Solver (ACO) - BioSign Sentinel"); // Give it a cool name
+        JFrame frame = new JFrame("Monochromatic Triangle Solver (ACO) - BioSign Sentinel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400); // Enlarged the window
+        frame.setSize(600, 400);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add some padding
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Set a cyberpunk-ish color scheme
-        Color backgroundColor = new Color(0x1E1E1E); // Dark gray
-        Color buttonColor = new Color(0x00FF7F); // Bright green
-        Color textColor = new Color(0xDCDCDC); // Light gray
+        Color backgroundColor = new Color(0x1E1E1E);
+        Color buttonColor = new Color(0x00FF7F);
+        Color textColor = new Color(0xDCDCDC);
 
         panel.setBackground(backgroundColor);
 
         JButton browseButton = new JButton("Locate City Data");
         browseButton.setForeground(textColor);
         browseButton.setBackground(buttonColor);
-        browseButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button
+        browseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton runButton = new JButton("Initiate Swarm");
         runButton.setForeground(textColor);
         runButton.setBackground(buttonColor);
-        runButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button
+        runButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JTextArea resultArea = new JTextArea(15, 40); // Increased size
+        JTextArea resultArea = new JTextArea(15, 40);
         resultArea.setEditable(false);
         resultArea.setBackground(backgroundColor);
         resultArea.setForeground(textColor);
-        JScrollPane scrollPane = new JScrollPane(resultArea); // Enable scrolling
+        JScrollPane scrollPane = new JScrollPane(resultArea);
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         panel.add(browseButton);
@@ -73,24 +72,27 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String inputData = resultArea.getText();
-                // Extract the file path from the text area. Assume it's on the first line after "City data located: "
                 String filePath = null;
-                String[] lines = inputData.split("\\n"); // Split by newline
+                String[] lines = inputData.split("\\n");
                 if (lines.length > 0 && lines[0].startsWith("City data located: ")) {
                     filePath = lines[0].substring("City data located: ".length());
-                    filePath = filePath.trim(); // Remove leading/trailing whitespace
+                    filePath = filePath.trim();
                 }
 
                 if (filePath == null || filePath.isEmpty()) {
-                    resultArea.setText("ERROR: No city data file selected.  Browse to a valid city data source.");
+                    resultArea.setText("ERROR: No city data file selected. Browse to a valid city data source.");
                     return;
                 }
 
-                String result = runACOAlgorithm(filePath); // Pass the actual file path to C++
+                String result = runACOAlgorithm(filePath);
 
-                resultArea.setText("ACO Algorithm running...\n" + result); // Display raw ACO data
+                if (result.startsWith("ERROR:")) {
+                    resultArea.setText(result);  // Display error from C++ code
+                    return;
+                }
 
-                // Call Python visualization script... if it's still operational.
+                resultArea.setText("ACO Algorithm running...\n" + result);
+
                 try {
                     ProcessBuilder pb = new ProcessBuilder("python", "visualize.py", result);
                     Process p = pb.start();
@@ -98,7 +100,7 @@ public class Main {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
                     String line;
                     while ((line = reader.readLine()) != null) {
-                        System.out.println(line); // Debugging, check python output
+                        System.out.println(line);
                     }
                     int exitCode = p.waitFor();
                     if (exitCode != 0) {
@@ -107,7 +109,7 @@ public class Main {
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    resultArea.append("\nERROR:  Python visualization error.  Check console for traceback.");
+                    resultArea.append("\nERROR: Python visualization error. Check console for traceback.");
                 }
             }
         });
