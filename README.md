@@ -1,10 +1,5 @@
 # Bio: Cyberpunk-Inspired Pathfinding Daemon ACO Solver
 
-![GitHub repo size]()
-![GitHub stars]()
-![GitHub forks]()
-![GitHub license]()
-
 ## Jacking into the Bionet Maze:
 
 **Welcome to Bio-Sign Sentinel, where swarms of digital ants navigate the neon-lit corridors of data to solve complex routing problems. This project implements an Ant Colony Optimization (ACO) algorithm to tackle the Traveling Salesman Problem (TSP) with a cyberpunk twist.**
