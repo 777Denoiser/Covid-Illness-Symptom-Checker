@@ -1,9 +1,9 @@
 # Bio: Cyberpunk-Inspired Pathfinding Daemon ACO Solver
 
-![GitHub repo size](https://img.shields.io/github/repo-size/yourusername/Bio-Sentinel)
-![GitHub stars](https://img.shields.io/github/stars/yourusername/Bio-Sentinel?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/Bio-Sentinel?style=social)
-![GitHub license](https://img.shields.io/github/license/yourusername/Bio-Sentinel)
+![GitHub repo size]()
+![GitHub stars]()
+![GitHub forks]()
+![GitHub license]()
 
 ## Jacking into the Bionet Maze:
 
